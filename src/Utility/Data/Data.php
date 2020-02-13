@@ -6,7 +6,7 @@ class Data{
     public static function validateQuery($data = null){
         if(isset($data['q']) AND $data['q']!= ''){
             //Futuras validaciones requeridas
-            return $data;
+            return $data['q'];
         }else{
             echo '{"path" : "q",
                    "message" : "Is Null"

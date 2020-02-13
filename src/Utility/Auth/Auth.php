@@ -1,21 +1,18 @@
 <?php
 namespace App\Utility\Auth;
 
-use Cake\Http\Client;
 use Cake\Core\Configure;
-
+use App\Utility\Http\Http;
 
 class Auth{
     
     public static function isValidToken($accessToken = null){
         
-        $http = new Client();
         $headers = [
             'Authorization' => 'Bearer '.$accessToken,
             'Content-Type' => 'application/x-www-form-urlencoded',
         ];
-        $response = $http->get("https://api.spotify.com/v1/me", [],
-        ['headers' => $headers]);
+        $response = Http::http_connection("GET", "https://api.spotify.com/v1/me", [], $headers);
         if($response->getStatusCode() != 200){
             return 0;
         } 
@@ -23,7 +20,6 @@ class Auth{
     }
     public static function refreshToken(){
         
-        $http = new Client();
         Configure::load('config', 'default');
         $refresh_token = Configure::read('refresh_token');
         $client_id = Configure::read('client_id');
@@ -37,7 +33,7 @@ class Auth{
             'Authorization' => 'Basic '.base64_encode($client_id . ':' . $client_secret),
             'Content-Type' => 'application/x-www-form-urlencoded',
         ];
-        $response = $http->post("https://accounts.spotify.com/api/token", $parameters, ['headers' => $headers, 'type' => 'json']);
+        $response = Http::http_connection("POST", "https://accounts.spotify.com/api/token", $parameters, $headers, 'json');
         
         
         if (isset($response->getJson()["access_token"])){

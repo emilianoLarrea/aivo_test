@@ -69,6 +69,8 @@ Router::scope('/', function (RouteBuilder $routes) {
     
     $routes->get('/api/v1/albums', ['controller' => 'MusicService', 'action' => 'getAlbums']);
     
+    $routes->get('/api/v1/artist', ['controller' => 'MusicService', 'action' => 'getArtist']);
+    
     /**
      * ...and connect the rest of 'Pages' controller's URLs.
      */
