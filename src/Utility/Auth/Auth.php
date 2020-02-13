@@ -10,16 +10,16 @@ class Auth{
     public static function isValidToken($accessToken = null){
         
         $http = new Client();
-        Configure::load('config', 'default');
+        $headers = [
+            'Authorization' => 'Bearer '.$accessToken,
+            'Content-Type' => 'application/x-www-form-urlencoded',
+        ];
         $response = $http->get("https://api.spotify.com/v1/me", [],
-        ['headers' => ['Authorization' => $accessToken]]);
-        
+        ['headers' => $headers]);
         if($response->getStatusCode() != 200){
-            echo 'Invalid access token';
-            header("HTTP/1.1 401 Unauthorized");
-            exit;
+            return 0;
         } 
-        return $response->getJson();
+        return 1;
     }
     public static function refreshToken(){
         
@@ -52,8 +52,12 @@ class Auth{
         }
     }
     
-    public static function requestAuthenticationToken(){
-        
-        
+    public static function getToken(){
+        Configure::load('config', 'default');
+        $token = Configure::read('auth_token');
+        if(strlen($token) == 0 OR Auth::isValidToken($token) == 0){
+            $token = Auth::refreshToken();
+        }
+        return $token;
     }
 }

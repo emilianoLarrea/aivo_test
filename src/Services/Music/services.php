@@ -7,8 +7,8 @@ class MusicService{
     {
     }
 
-    public function getAlbums($data = null, $token = null){
-        return Auth::refreshToken();
+    public function getAlbums($data = null){
+        return Auth::getToken();
     }
    
 }
