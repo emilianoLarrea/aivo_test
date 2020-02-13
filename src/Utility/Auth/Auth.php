@@ -39,7 +39,7 @@ class Auth{
         if (isset($response->getJson()["access_token"])){
             Configure::write('auth_token', $response->getJson()["access_token"]);
             Configure::dump('config', 'default', ["client_id", "client_secret", "redirect_uri", "auth_token", "refresh_token", "scope"]);
-            return json_encode($response->getJson()["access_token"]);
+            return $response->getJson()["access_token"];
         }
         if (in_array("error", $response->getJson())){
         echo $response->getJson()['error'].", ".$response->getJson()['error_description'];
