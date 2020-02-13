@@ -29,7 +29,8 @@ class MusicServiceController extends AppController
         require_once(ROOT . DS . 'src'. DS  .'Services' . DS  . 'Music' . DS .'services.php');
         $data = Data::validateQuery($this->request->getQuery());
         $token = Auth::getToken();
-        $resultJ = \MusicService::getAlbums($data, $token);
+        $artist = \MusicService::getArtist($data, $token);
+        $resultJ = \MusicService::getAlbums($artist, $token);
         $this->response->type('json');
         $this->response->body($resultJ);
         return $this->response;
